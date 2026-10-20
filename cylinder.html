@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cylinder Volume Calculator</title>
+  <!-- ดึง Bootstrap 5 CSS ผ่าน CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* สไตล์กรอบและรูปภาพ */
+    .custom-box {
+      border: 1px dashed #6c757d;
+      padding: 15px;
+      height: 100%;
+      background-color: #fff;
+    }
+    
+    .fixed-height-img {
+      height: 150px;
+      object-fit: contain;
+    }
+
+    .form-label-custom {
+      width: 70px;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body class="p-3 p-md-4 bg-light">
+
+  <div class="container-fluid max-width-lg">
+    <!-- Block 1: ส่วนบนสุด (กว้างเต็ม 12 คอลัมน์) -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="custom-box text-center">
+          <h1 class="fw-normal mb-3">Cylinder</h1>
+          <p class="text-start">A cylinder is a fundamental 3D shape in geometry, which has two parallel circular bases at equal distances. LPG gas cylinder is one such example of a cylinder in real life.</p>
+          <p class="text-start mb-0">The radius of a cylinder (r) is the radius of the 2 bases found at the top and the bottom of the cylinder. The height of the cylinder (h) is the distance between the two circular bases is called the. The volume of the cylinder (v) can be derived as shown in the picture below.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- แถวล่าง: เรียงซ้อนลงมาในจอเล็ก และแบ่ง 3 คอลัมน์เมื่อหน้าจอ >= 576px (col-sm-4) -->
+    <div class="row g-3">
+      
+      <!-- Block 2 -->
+      <div class="col-12 col-sm-4">
+        <div class="custom-box text-center">
+          <img src="tank.jpg" alt="Cylinder tank" class="fixed-height-img mb-2">
+          <p class="mb-0">
+            Cylinder tank<br>
+            Source: <a href="https://pixabay.com" target="_blank" class="text-primary text-decoration-none">Pixabay</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Block 3 -->
+      <div class="col-12 col-sm-4">
+        <div class="custom-box text-center">
+          <h2 class="h3 fw-normal mb-3">Cylinder volume</h2>
+          <img src="cylinder.png" alt="Cylinder volume formula" class="fixed-height-img">
+        </div>
+      </div>
+
+      <!-- Block 4 -->
+      <div class="col-12 col-sm-4">
+        <div class="custom-box text-center">
+          <h2 class="h3 fw-normal mb-3">Volume calculator</h2>
+          
+          <form id="calcForm" onsubmit="return false;">
+            <div class="d-flex align-items-center mb-2">
+              <label for="radiusInput" class="form-label-custom text-start">Radius:</label>
+              <input type="number" step="any" id="radiusInput" class="form-control form-control-sm" required>
+            </div>
+            
+            <div class="d-flex align-items-center mb-2">
+              <label for="heightInput" class="form-label-custom text-start">Height:</label>
+              <input type="number" step="any" id="heightInput" class="form-control form-control-sm" required>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+              <label for="unitSelect" class="form-label-custom text-start">Unit:</label>
+              <select id="unitSelect" class="form-select form-select-sm" style="width: auto;">
+                <option value="cm">cm</option>
+                <option value="mm">mm</option>
+              </select>
+            </div>
+
+            <div class="text-start">
+              <button type="submit" id="btnCalculate" class="btn btn-sm btn-primary px-3">Calculate</button>
+            </div>
+          </form>
+
+          <!-- พื้นที่แสดงผลลัพธ์ -->
+          <div id="resultOutput" class="text-start mt-3 fw-normal"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('calcForm');
+      const radiusInput = document.getElementById('radiusInput');
+      const heightInput = document.getElementById('heightInput');
+      const unitSelect = document.getElementById('unitSelect');
+      const resultOutput = document.getElementById('resultOutput');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let r = parseFloat(radiusInput.value);
+        let h = parseFloat(heightInput.value);
+        const unit = unitSelect.value;
+
+        if (isNaN(r) || isNaN(h) || r <= 0 || h <= 0) {
+          resultOutput.textContent = "Please enter valid numbers.";
+          return;
+        }
+
+        // หากเป็น mm ให้แปลงค่ารวดเดียวด้วยการหาร 10 ให้เป็น cm
+        if (unit === 'mm') {
+          r /= 10;
+          h /= 10;
+        }
+
+        // คำนวณปริมาตร = π * r² * h
+        const volume = Math.PI * Math.pow(r, 2) * h;
+        
+        // ปัดเศษทศนิยมไม่เกิน 2 ตำแหน่ง
+        const formattedVolume = (Math.round(volume * 100) / 100);
+
+        resultOutput.innerHTML = `Volume = ${formattedVolume} cm<sup>3</sup>`;
+      });
+    });
+  </script>
+</body>
+</html>
